@@ -90,9 +90,8 @@ contract VesaCrowdsale is Ownable {
     uint256 public startPreICO;
     uint256 public endPreICO;
     uint256 public preICODurationInDays = 31 days;
-    uint256 public preICOSoftCap = 285 ether;
+    uint256 public preICOSoftCap = 140 ether;
     uint256 public preICOHardCap = 1400 ether;
-    uint256 public fundingPresaleIcoGoal = 285 ether;
     bool public fundingPresaleIcoGoalReached = false;
     bool public preICOClosed = false;
 
@@ -102,7 +101,6 @@ contract VesaCrowdsale is Ownable {
     uint256 public crowdsaleDurationInDays = 31 days;
     uint256 public crowdsaleSoftCap = 3500 ether;
     uint256 public crowdsaleHardCap = 68500 ether;
-    uint256 public fundingGoal = 3500 ether;
     bool public fundingGoalReached = false;
     bool public crowdsaleClosed = false;
 
@@ -140,17 +138,14 @@ contract VesaCrowdsale is Ownable {
         endCrowdsale = startCrowdsale.add(crowdsaleDurationInDays);
     }
 
-    //OK
     function atLeastOnePhaseIsActive() internal view returns (bool) {
         return isPreIcoActive() || isCrowdsaleActive();
     }
 
-    //OK
     function isPreIcoActive() internal view returns (bool) {
         return !preICOClosed && now >= startPreICO && now <= endPreICO && !isCrowdsaleActive();
     }
 
-    //OK
     function isCrowdsaleActive() internal view returns (bool) {
         return !crowdsaleClosed && endCrowdsale > 0 && now >= startCrowdsale && now <= endCrowdsale;
     }
