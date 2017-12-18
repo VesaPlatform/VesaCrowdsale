@@ -193,8 +193,6 @@ contract VesaCrowdsale is Ownable {
      * The function without name is the default function that is called whenever anyone sends funds to a contract
      */
     function() public payable {
-        require(!preICOClosed);
-        require(!crowdsaleClosed);
         require(atLeastOnePhaseIsActive());
         require(msg.value > minSum);
         uint256 amount = msg.value;
@@ -269,8 +267,8 @@ contract VesaCrowdsale is Ownable {
         uint256 diff = 28571428570000;
 
         if (now >= (startCrowdsale + 5 hours)) {
-            // 0.00257142857142857 ETH
-            price = 2571428571428570;
+            // 0.00271428571385 ETH
+            price = 2714285713850000;
         } else {
             uint256 hoursLeft = now.sub(startCrowdsale).div(1 hours);
             price = price.add(diff.mul(hoursLeft));
@@ -288,7 +286,7 @@ contract VesaCrowdsale is Ownable {
         // from 14,28571429 ETH to 25 ETH.
         if (amount >= 14285714290000000000 && amount < 25000000000000000000) {return 10;}
         // from 25 ETH to 85 ETH.
-        if (amount >= 25000000000000000000 && amount < 85000000000000000000) {return 10;}
+        if (amount >= 25000000000000000000 && amount < 85000000000000000000) {return 11;}
         // from 85 ETH to 285 ETH.
         if (amount >= 85000000000000000000 && amount < 285000000000000000000) {return 12;}
         // from 285 ETH.
