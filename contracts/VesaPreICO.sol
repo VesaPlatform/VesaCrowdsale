@@ -77,26 +77,26 @@ interface token {
     function transfer(address receiver, uint amount) public;
 }
 
-contract VesaPrePCO {
+contract VesaPreICO is Ownable {
     using SafeMath for uint256;
     using SafeBonus for uint256;
 
     address public beneficiary;
-    uint8 public durationInDays = 31;
-    uint public fundingGoal = 140 ether;
-    uint public fundingGoalHardCap = 1400 ether;
+    uint8 public constant durationInDays = 31;
+    uint public constant fundingGoal = 140 ether;
+    uint public constant fundingGoalHardCap = 1400 ether;
     uint public amountRaised;
     uint public start;
     uint public deadline;
-    uint public bonusPrice = 1857142857000000;
-    uint public bonusPriceDeltaPerHour = 28571428570000;
-    uint public bonusPeriodDurationInHours = 10;
-    uint public price = 2142857142857140;
-    uint public minSum = 142857142900000000;
+    uint public constant bonusPrice = 1857142857000000;
+    uint public constant bonusPriceDeltaPerHour = 28571428570000;
+    uint public constant bonusPeriodDurationInHours = 10;
+    uint public constant price = 2142857142857140;
+    uint public constant minSum = 142857142900000000;
     token public tokenReward;
     mapping(address => uint256) public balanceOf;
-    bool fundingGoalReached = false;
-    bool crowdsaleClosed = false;
+    bool public fundingGoalReached = false;
+    bool public crowdsaleClosed = false;
 
     event GoalReached(address recipient, uint totalAmountRaised);
     event FundTransfer(address backer, uint amount, bool isContribution);
@@ -106,9 +106,9 @@ contract VesaPrePCO {
      *
      * Setup the owner
      */
-    function VesaPrePCO(
-        address ifSuccessfulSendTo,
-        address addressOfTokenUsedAsReward
+    function VesaPreICO(
+        address addressOfTokenUsedAsReward, 
+        address ifSuccessfulSendTo
     ) public {
         beneficiary = ifSuccessfulSendTo;
         start = now;
@@ -131,7 +131,7 @@ contract VesaPrePCO {
     function getPrice() public view returns (uint) {
         require(!crowdsaleClosed);
 
-        if ( now >= (start + 10 hours)) {
+        if ( now >= (start + bonusPeriodDurationInHours.mul(1 hours))) {
             return price;
         } else {
             uint hoursLeft = now.sub(start).div(1 hours);
@@ -139,7 +139,9 @@ contract VesaPrePCO {
         }
     }
 
-    function getBonus(uint amount) public pure returns (uint) {
+    function getBonus(uint amount) public view returns (uint) {
+        require(!crowdsaleClosed);
+
         if (amount < 2857142857000000000) { return 0; }                                       // < 2.857142857
         if (amount >= 2857142857000000000 && amount < 7142857143000000000) { return 6; }      // 2.857142857-7,142857143 ETH
         if (amount >= 7142857143000000000 && amount < 14285714290000000000) { return 8; }     // 7,142857143-14,28571429 ETH
@@ -171,8 +173,6 @@ contract VesaPrePCO {
         FundTransfer(msg.sender, amount, true);
     }
 
-    
-
     /**
      * Check if goal was reached
      *
@@ -186,7 +186,6 @@ contract VesaPrePCO {
         crowdsaleClosed = true;
     }
 
-
     /**
      * Withdraw the funds
      *
@@ -194,7 +193,7 @@ contract VesaPrePCO {
      * sends the entire amount to the beneficiary. If goal was not reached, each contributor can withdraw
      * the amount they contributed.
      */
-    function safeWithdrawal() public afterDeadline {
+    function safeWithdrawal() public companyCanBeFinished {
         if (!fundingGoalReached) {
             uint amount = balanceOf[msg.sender];
             balanceOf[msg.sender] = 0;
