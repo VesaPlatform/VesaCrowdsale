@@ -106,14 +106,11 @@ contract VesaPreICO is Ownable {
      *
      * Setup the owner
      */
-    function VesaPreICO(
-        address addressOfTokenUsedAsReward, 
-        address ifSuccessfulSendTo
-    ) public {
-        beneficiary = ifSuccessfulSendTo;
+    function VesaPreICO() public {
+        beneficiary = 0x94e1F1Fa284061184B583a61633CaC75e03cFdBC;
         start = now;
         deadline = start + durationInDays * 1 days;
-        tokenReward = token(addressOfTokenUsedAsReward);
+        tokenReward = token(0xb1c74c1D82824428e484072069041deD079eD921);
     }
 
     function isAfterDeadline() internal view returns (bool) { return now >= deadline; } 

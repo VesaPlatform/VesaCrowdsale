@@ -295,6 +295,9 @@ contract('VesaPreICO', function(accounts) {
 
     let status = await meta.checkGoalReached();
     let close = await meta.crowdsaleClosed.call();
+    let fundingGoalReached = await meta.fundingGoalReached.call();
+    console.log(fundingGoalReached);
+    console.log(close);
     assert.isTrue(close, "crowdsale closed");
 
     let contractBalance = await web3.eth.getBalance(meta.address);
