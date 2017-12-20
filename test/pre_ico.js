@@ -123,8 +123,6 @@ contract('VesaPreICO', function(accounts) {
     let testAccount = accounts[7];
     let testAccountBalance = await web3.eth.getBalance(testAccount);
     let testAccountTokensBalance =  await tokenMeta.balanceOf.call(testAccount);
-    //console.log(web3.fromWei(testAccountBalance.valueOf()));
-    //console.log(web3.fromWei(testAccountTokensBalance.valueOf()));
 
     assert.equal(testAccountTokensBalance.valueOf(), web3.toWei(0, 'ether'), 'wrong token balance');
 
@@ -163,6 +161,38 @@ contract('VesaPreICO', function(accounts) {
     await mineBlock()
     let value = await meta.getPrice.call();
     assert.equal(value.valueOf(), price_7_h, "Price inccorect");
+  });
+
+  it("user wants to buy a tokens", async function() {
+    let tokenMeta = await VesaToken.deployed();
+    let meta = await VesaPreICO.deployed();
+
+    let currentContractTokenBalance = await tokenMeta.balanceOf.call(meta.address);
+
+    let testAccount = accounts[7];
+    let testAccountBalance = await web3.eth.getBalance(testAccount);
+    let testAccountTokensBalance =  await tokenMeta.balanceOf.call(testAccount);
+
+    assert.equal(web3.toWei(testAccountTokensBalance.valueOf()), "5478260869978071833679000000000000000000", 'wrong token balance');
+
+    await web3.eth.sendTransaction({
+      from: testAccount,
+      to: meta.address,
+      value: web3.toWei(10, 'ether')
+    });
+
+    testAccountBalance = await web3.eth.getBalance(testAccount);
+    testAccountTokensBalance =  await tokenMeta.balanceOf.call(testAccount);
+    assert.equal(web3.fromWei(testAccountTokensBalance.valueOf()), "10802.204532347323966221", 'wrong token balance');
+
+  })
+
+  it("try check goal reached and make sure that crowdsale is not closed", async function () {
+    let meta = await VesaPreICO.deployed();
+
+    let status = await meta.checkGoalReached();
+    let close = await meta.crowdsaleClosed.call();
+    assert.isNotTrue(close, "crowssale closed");
   });
 
   it("Hours passed: 8. The price should be " + web3.fromWei(price_8_h), async function () {

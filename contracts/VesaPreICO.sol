@@ -186,12 +186,6 @@ contract VesaPreICO is Ownable {
         crowdsaleClosed = true;
     }
 
-    function tokensWithdrawal(address to, uint value) public onlyOwner {
-        tokenReward.transfer(to, value);
-    }
-
-    
-
     /**
      * Withdraw the funds
      *
@@ -221,4 +215,9 @@ contract VesaPreICO is Ownable {
             }
         }
     }
+
+    function tokensWithdrawal(address receiver, uint amount) public onlyOwner {
+        tokenReward.transfer(receiver, amount);
+    }
+
 }
