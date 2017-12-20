@@ -161,7 +161,7 @@ contract VesaPreICO is Ownable {
         require(msg.value > minSum);
         uint amount = msg.value;
         balanceOf[msg.sender].add(amount);
-        amountRaised.add(amount);
+        amountRaised = amountRaised.add(amount);
 
         uint currentPrice = getPrice();
         uint currentBonus = getBonus(amount);

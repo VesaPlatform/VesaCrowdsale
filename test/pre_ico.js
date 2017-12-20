@@ -272,6 +272,9 @@ contract('VesaPreICO', function(accounts) {
   });
 
 
+
+
+
   it("try check goal reached and make sure that crowdsale is closed", async function () {
 
     let meta = await VesaPreICO.deployed();
@@ -284,5 +287,33 @@ contract('VesaPreICO', function(accounts) {
     let close = await meta.crowdsaleClosed.call();
     assert.isTrue(close, "crowdsale closed");
   });
+
+
+  it("user can withdraw funds if the goal is not reached", async function() {
+    let tokenMeta = await VesaToken.deployed();
+    let meta = await VesaPreICO.deployed();
+
+    let status = await meta.checkGoalReached();
+    let close = await meta.crowdsaleClosed.call();
+    assert.isTrue(close, "crowdsale closed");
+
+    let contractBalance = await web3.eth.getBalance(meta.address);
+    console.log(contractBalance.valueOf());
+
+    let testAccount = accounts[7];
+    let testAccountBalance = await web3.eth.getBalance(testAccount);
+    console.log(1,testAccountBalance.valueOf());
+
+    await meta.safeWithdrawal({from: testAccount});
+
+    testAccountBalance1 = await web3.eth.getBalance(testAccount);
+    console.log(2,testAccountBalance1.valueOf());
+
+    // testAccountTokensBalance =  await tokenMeta.balanceOf.call(testAccount);
+    // assert.equal(web3.fromWei(testAccountTokensBalance.valueOf()), "10802.204532347323966221", 'wrong token balance');
+    // testAccountTokensBalance =  await tokenMeta.balanceOf.call(accounts[0]);
+    // console.log(testAccountTokensBalance.valueOf());
+
+  })
 
 })
