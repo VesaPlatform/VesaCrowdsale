@@ -140,6 +140,14 @@ contract('VesaPreICO', function(accounts) {
 
   })
 
+  it("try check goal reached and make sure that crowdsale is not closed", async function () {
+    let meta = await VesaPreICO.deployed();
+
+    let status = await meta.checkGoalReached();
+    let close = await meta.crowdsaleClosed.call();
+    assert.isNotTrue(close, "crowssale closed");
+  });
+
 
   it("Hours passed: 6. The price should be " + web3.fromWei(price_6_h), async function () {
     let meta = await VesaPreICO.deployed();
@@ -234,29 +242,17 @@ contract('VesaPreICO', function(accounts) {
   });
 
 
-  it("checkGoalReached call", async function () {
+  it("try check goal reached and make sure that crowdsale is closed", async function () {
 
     let meta = await VesaPreICO.deployed();
 
-    let start = await meta.start.call();
-    let startValue = start.valueOf();
-    //console.log(startValue);
+    let days_31 = 86400 * 31;
 
-    let deadline = await meta.deadline.call();
-    let deadlineValue = deadline.valueOf();
-    //console.log(deadlineValue);
-
-    //console.log(deadlineValue - startValue);
-
-    let days_33 = 86400 * 30;
-    //console.log(days_33);
-
-    await timeTravel(days_33) // 33 days later
+    await timeTravel(days_31) // 31 days later
     await mineBlock()
     let status = await meta.checkGoalReached();
-    //console.log(status);
     let close = await meta.crowdsaleClosed.call();
-    //console.log(close);
+    assert.isTrue(close, "crowdsale closed");
   });
 
 })
