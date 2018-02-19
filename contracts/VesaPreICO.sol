@@ -106,11 +106,13 @@ contract VesaPreICO is Ownable {
      *
      * Setup the owner
      */
-    function VesaPreICO() public {
-        beneficiary = 0x94e1F1Fa284061184B583a61633CaC75e03cFdBC;
+    function VesaPreICO(address _t, address _b) public {
+        //beneficiary = 0x94e1F1Fa284061184B583a61633CaC75e03cFdBC;
+        beneficiary = _b;
         start = now;
         deadline = start + durationInDays * 1 days;
-        tokenReward = token(0xb1c74c1D82824428e484072069041deD079eD921);
+        //tokenReward = token(0xb1c74c1D82824428e484072069041deD079eD921);
+        tokenReward = token(_t);
     }
 
     function isAfterDeadline() internal view returns (bool) { return now >= deadline; } 
@@ -157,7 +159,7 @@ contract VesaPreICO is Ownable {
         require(!crowdsaleClosed);
         require(msg.value > minSum);
         uint amount = msg.value;
-        balanceOf[msg.sender].add(amount);
+        balanceOf[msg.sender] = balanceOf[msg.sender].add(amount);
         amountRaised = amountRaised.add(amount);
 
         uint currentPrice = getPrice();

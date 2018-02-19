@@ -1,5 +1,5 @@
 var VesaToken = artifacts.require("VesaToken");
-var VesaPreICO = artifacts.require("VesaPreICO");
+//var VesaPreICO = artifacts.require("VesaPreICO");
 
 // contract("VesaPreICO", function(accounts) {
 // 	var ownerAddress = accounts[0];

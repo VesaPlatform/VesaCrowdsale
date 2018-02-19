@@ -1,7 +1,7 @@
 pragma solidity ^0.4.18;
 
-import 'zeppelin-solidity/contracts/token/StandardToken.sol';
-import 'zeppelin-solidity/contracts/token/BurnableToken.sol';
+import 'zeppelin-solidity/contracts/token/ERC20/StandardToken.sol';
+import 'zeppelin-solidity/contracts/token/ERC20/BurnableToken.sol';
 
 contract VesaToken is StandardToken, BurnableToken {
 
@@ -11,7 +11,7 @@ contract VesaToken is StandardToken, BurnableToken {
     uint256 public INITIAL_SUPPLY = 40000000 * (10 ** decimals);
 
     function VesaToken() public {
-        totalSupply = INITIAL_SUPPLY;
+        totalSupply_ = INITIAL_SUPPLY;
         balances[msg.sender] = INITIAL_SUPPLY;
     }
 
