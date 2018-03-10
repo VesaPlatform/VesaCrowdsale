@@ -110,7 +110,7 @@
 	     */
 	    function VesaStage2PreICO() public {
 	        beneficiary = 0x94e1F1Fa284061184B583a61633CaC75e03cFdBC;
-	        start = 1520427600;
+	        start = 1522155600;
 	        deadline = start + durationInDays * 1 days;
 	        tokenReward = token(0xb1c74c1D82824428e484072069041deD079eD921);
 	    }
