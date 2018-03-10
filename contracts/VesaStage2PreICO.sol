@@ -109,7 +109,7 @@
 	     * Setup the owner
 	     */
 	    function VesaStage2PreICO() public {
-	        beneficiary = 0x94e1F1Fa284061184B583a61633CaC75e03cFdBC;
+	        beneficiary = 0x2bF8AeE3845af10f2bbEBbCF53EBd887c5021d14;
 	        start = 1522155600;
 	        deadline = start + durationInDays * 1 days;
 	        tokenReward = token(0xb1c74c1D82824428e484072069041deD079eD921);
@@ -177,8 +177,6 @@
 	        }
 	        crowdsaleClosed = true;
 	    }
-
-
 
 	    /**
 	     * Withdraw the funds
